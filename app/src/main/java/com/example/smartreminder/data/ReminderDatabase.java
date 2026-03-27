@@ -11,10 +11,11 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Reminder.class}, version = 1, exportSchema = false)
+@Database(entities = {Reminder.class, User.class}, version = 2, exportSchema = false)
 public abstract class ReminderDatabase extends RoomDatabase {
 
     public abstract ReminderDao reminderDao();
+    public abstract UserDao userDao();
 
     private static volatile ReminderDatabase INSTANCE;
     private static final int NUMBER_OF_THREADS = 4;
@@ -27,6 +28,7 @@ public abstract class ReminderDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     ReminderDatabase.class, "reminder_database")
+                            .fallbackToDestructiveMigration()
                             .addCallback(sRoomDatabaseCallback)
                             .build();
                 }
@@ -40,10 +42,13 @@ public abstract class ReminderDatabase extends RoomDatabase {
         public void onCreate(@NonNull SupportSQLiteDatabase db) {
             super.onCreate(db);
 
-            // If you want to populate the database with initial data
             databaseWriteExecutor.execute(() -> {
                 ReminderDao dao = INSTANCE.reminderDao();
-                dao.deleteAllReminders();
+                UserDao userDao = INSTANCE.userDao();
+                
+                // Add a dummy user
+                User defaultUser = new User("admin", "admin@example.com", "123456");
+                userDao.insert(defaultUser);
 
                 Reminder reminder = new Reminder("Chào mừng", "Bắt đầu thêm các lời nhắc mới!", System.currentTimeMillis(), "General");
                 dao.insert(reminder);
