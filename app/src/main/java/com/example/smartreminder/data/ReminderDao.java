@@ -23,9 +23,15 @@ public interface ReminderDao {
     @Query("DELETE FROM reminders")
     void deleteAllReminders();
 
-    @Query("SELECT * FROM reminders ORDER BY dateTime ASC")
+    @Query("SELECT * FROM reminders WHERE is_deleted = 0 ORDER BY due_date ASC")
     LiveData<List<Reminder>> getAllReminders();
 
-    @Query("SELECT * FROM reminders WHERE category = :category ORDER BY dateTime ASC")
-    LiveData<List<Reminder>> getRemindersByCategory(String category);
+    @Query("SELECT * FROM reminders WHERE user_id = :userId AND is_deleted = 0 ORDER BY due_date ASC")
+    LiveData<List<Reminder>> getRemindersByUser(String userId);
+
+    @Query("SELECT * FROM reminders WHERE category_id = :categoryId AND is_deleted = 0")
+    LiveData<List<Reminder>> getRemindersByCategory(String categoryId);
+
+    @Query("SELECT * FROM reminders WHERE status = :status AND is_deleted = 0")
+    LiveData<List<Reminder>> getRemindersByStatus(String status);
 }

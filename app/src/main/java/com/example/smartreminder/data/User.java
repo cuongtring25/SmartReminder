@@ -1,33 +1,102 @@
 package com.example.smartreminder.data;
 
+import androidx.annotation.NonNull;
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
+import java.util.Date;
 
-@Entity(tableName = "users")
+@Entity(tableName = "users", indices = {@Index(value = {"email"}, unique = true)})
 public class User {
-    @PrimaryKey(autoGenerate = true)
-    private int id;
-    
-    private String username;
-    private String email;
-    private String password;
+    @PrimaryKey
+    @NonNull
+    @ColumnInfo(name = "user_id")
+    private String userId;
 
-    public User(String username, String email, String password) {
-        this.username = username;
+    @NonNull
+    private String email;
+
+    @NonNull
+    @ColumnInfo(name = "password_hash")
+    private String passwordHash;
+
+    @NonNull
+    @ColumnInfo(name = "full_name")
+    private String fullName;
+
+    @ColumnInfo(name = "avatar_url")
+    private String avatarUrl;
+
+    private String phone;
+
+    @ColumnInfo(defaultValue = "light")
+    private String theme;
+
+    @ColumnInfo(defaultValue = "vi")
+    private String language;
+
+    @ColumnInfo(name = "notification_enabled", defaultValue = "1")
+    private int notificationEnabled;
+
+    @NonNull
+    @ColumnInfo(name = "created_at")
+    private Date createdAt;
+
+    @NonNull
+    @ColumnInfo(name = "updated_at")
+    private Date updatedAt;
+
+    @ColumnInfo(name = "is_deleted", defaultValue = "0")
+    private int isDeleted;
+
+    public User(@NonNull String userId, @NonNull String email, @NonNull String passwordHash, @NonNull String fullName, Date createdAt, Date updatedAt) {
+        this.userId = userId;
         this.email = email;
-        this.password = password;
+        this.passwordHash = passwordHash;
+        this.fullName = fullName;
+        this.createdAt = createdAt != null ? createdAt : new Date();
+        this.updatedAt = updatedAt != null ? updatedAt : new Date();
+        this.theme = "light";
+        this.language = "vi";
+        this.notificationEnabled = 1;
+        this.isDeleted = 0;
     }
 
     // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    @NonNull public String getUserId() { return userId; }
+    public void setUserId(@NonNull String userId) { this.userId = userId; }
 
-    public String getUsername() { return username; }
-    public void setUsername(String username) { this.username = username; }
+    @NonNull public String getEmail() { return email; }
+    public void setEmail(@NonNull String email) { this.email = email; }
 
-    public String getEmail() { return email; }
-    public void setEmail(String email) { this.email = email; }
+    @NonNull public String getPasswordHash() { return passwordHash; }
+    public void setPasswordHash(@NonNull String passwordHash) { this.passwordHash = passwordHash; }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    @NonNull public String getFullName() { return fullName; }
+    public void setFullName(@NonNull String fullName) { this.fullName = fullName; }
+
+    public String getAvatarUrl() { return avatarUrl; }
+    public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
+
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public String getTheme() { return theme; }
+    public void setTheme(String theme) { this.theme = theme; }
+
+    public String getLanguage() { return language; }
+    public void setLanguage(String language) { this.language = language; }
+
+    public int getNotificationEnabled() { return notificationEnabled; }
+    public void setNotificationEnabled(int notificationEnabled) { this.notificationEnabled = notificationEnabled; }
+
+    @NonNull public Date getCreatedAt() { return createdAt; }
+    public void setCreatedAt(@NonNull Date createdAt) { this.createdAt = createdAt; }
+
+    @NonNull public Date getUpdatedAt() { return updatedAt; }
+    public void setUpdatedAt(@NonNull Date updatedAt) { this.updatedAt = updatedAt; }
+
+    public int getIsDeleted() { return isDeleted; }
+    public void setIsDeleted(int isDeleted) { this.isDeleted = isDeleted; }
 }
