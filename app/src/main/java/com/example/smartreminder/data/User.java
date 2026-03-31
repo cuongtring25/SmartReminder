@@ -39,6 +39,22 @@ public class User {
     @ColumnInfo(name = "notification_enabled", defaultValue = "1")
     private int notificationEnabled;
 
+    // Gamification Fields
+    @ColumnInfo(name = "current_streak", defaultValue = "0")
+    private int currentStreak;
+
+    @ColumnInfo(name = "longest_streak", defaultValue = "0")
+    private int longestStreak;
+
+    @ColumnInfo(defaultValue = "0")
+    private int xp;
+
+    @ColumnInfo(defaultValue = "1")
+    private int level;
+
+    @ColumnInfo(name = "last_completion_date")
+    private Date lastCompletionDate;
+
     @NonNull
     @ColumnInfo(name = "created_at")
     private Date createdAt;
@@ -60,6 +76,10 @@ public class User {
         this.theme = "light";
         this.language = "vi";
         this.notificationEnabled = 1;
+        this.currentStreak = 0;
+        this.longestStreak = 0;
+        this.xp = 0;
+        this.level = 1;
         this.isDeleted = 0;
     }
 
@@ -90,6 +110,21 @@ public class User {
 
     public int getNotificationEnabled() { return notificationEnabled; }
     public void setNotificationEnabled(int notificationEnabled) { this.notificationEnabled = notificationEnabled; }
+
+    public int getCurrentStreak() { return currentStreak; }
+    public void setCurrentStreak(int currentStreak) { this.currentStreak = currentStreak; }
+
+    public int getLongestStreak() { return longestStreak; }
+    public void setLongestStreak(int longestStreak) { this.longestStreak = longestStreak; }
+
+    public int getXp() { return xp; }
+    public void setXp(int xp) { this.xp = xp; }
+
+    public int getLevel() { return level; }
+    public void setLevel(int level) { this.level = level; }
+
+    public Date getLastCompletionDate() { return lastCompletionDate; }
+    public void setLastCompletionDate(Date lastCompletionDate) { this.lastCompletionDate = lastCompletionDate; }
 
     @NonNull public Date getCreatedAt() { return createdAt; }
     public void setCreatedAt(@NonNull Date createdAt) { this.createdAt = createdAt; }

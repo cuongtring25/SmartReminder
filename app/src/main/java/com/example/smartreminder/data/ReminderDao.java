@@ -7,6 +7,7 @@ import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import java.util.Date;
 import java.util.List;
 
 @Dao
@@ -34,4 +35,14 @@ public interface ReminderDao {
 
     @Query("SELECT * FROM reminders WHERE status = :status AND is_deleted = 0")
     LiveData<List<Reminder>> getRemindersByStatus(String status);
+
+    // Stats for Dashboard
+    @Query("SELECT COUNT(*) FROM reminders WHERE user_id = :userId AND DATE(due_date/1000, 'unixepoch') = DATE(:today/1000, 'unixepoch') AND is_deleted = 0")
+    LiveData<Integer> getTodayTasksCount(String userId, long today);
+
+    @Query("SELECT COUNT(*) FROM reminders WHERE user_id = :userId AND status = 'done' AND DATE(due_date/1000, 'unixepoch') = DATE(:today/1000, 'unixepoch') AND is_deleted = 0")
+    LiveData<Integer> getTodayCompletedCount(String userId, long today);
+
+    @Query("SELECT COUNT(*) FROM reminders WHERE user_id = :userId AND status = 'done' AND is_deleted = 0")
+    LiveData<Integer> getTotalCompletedCount(String userId);
 }
