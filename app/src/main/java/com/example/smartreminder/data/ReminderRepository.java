@@ -21,8 +21,8 @@ public class ReminderRepository {
         return mAllReminders;
     }
 
-    public LiveData<List<Reminder>> getRemindersByCategory(String category) {
-        return mReminderDao.getRemindersByCategory(category);
+    public LiveData<List<Reminder>> getRemindersByCategory(int categoryId) {
+        return mReminderDao.getRemindersByCategory(categoryId);
     }
 
     public void insert(Reminder reminder) {

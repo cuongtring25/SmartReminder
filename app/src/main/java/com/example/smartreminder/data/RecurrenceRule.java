@@ -1,7 +1,6 @@
 package com.example.smartreminder.data;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
@@ -10,65 +9,50 @@ import java.util.Date;
 
 @Entity(tableName = "recurrence_rules",
         foreignKeys = @ForeignKey(entity = User.class,
-                parentColumns = "user_id",
+                parentColumns = "id",
                 childColumns = "user_id",
                 onDelete = ForeignKey.CASCADE),
         indices = {@Index("user_id")})
 public class RecurrenceRule {
-    @PrimaryKey
-    @NonNull
-    @ColumnInfo(name = "recurrence_id")
-    private String recurrenceId;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
-    @NonNull
-    @ColumnInfo(name = "user_id")
-    private String userId;
+    private int user_id;
 
     @NonNull
     private String frequency; // daily, weekly, monthly, custom
 
-    @ColumnInfo(defaultValue = "1")
-    private int interval;
+    private int interval = 1;
 
-    @ColumnInfo(name = "days_of_week")
-    private String daysOfWeek; // JSON: [1,3,5]
+    private String days_of_week; // JSON: [1,3,5]
 
-    @ColumnInfo(name = "day_of_month")
-    private Integer dayOfMonth;
+    private Integer day_of_month;
 
     @NonNull
-    @ColumnInfo(name = "start_date")
-    private Date startDate;
+    private Date start_date;
 
-    @ColumnInfo(name = "end_date")
-    private Date endDate;
+    private Date end_date;
 
-    @ColumnInfo(name = "max_occurrences")
-    private Integer maxOccurrences;
+    private Integer max_occurrences;
 
-    @ColumnInfo(name = "is_active", defaultValue = "1")
-    private int isActive;
+    private int is_active = 1;
 
     @NonNull
-    @ColumnInfo(name = "created_at")
-    private Date createdAt;
+    private Date created_at;
 
-    public RecurrenceRule(@NonNull String recurrenceId, @NonNull String userId, @NonNull String frequency, @NonNull Date startDate) {
-        this.recurrenceId = recurrenceId;
-        this.userId = userId;
+    public RecurrenceRule(int user_id, @NonNull String frequency, @NonNull Date start_date) {
+        this.user_id = user_id;
         this.frequency = frequency;
-        this.startDate = startDate;
-        this.interval = 1;
-        this.isActive = 1;
-        this.createdAt = new Date();
+        this.start_date = start_date;
+        this.created_at = new Date();
     }
 
     // Getters and Setters
-    @NonNull public String getRecurrenceId() { return recurrenceId; }
-    public void setRecurrenceId(@NonNull String recurrenceId) { this.recurrenceId = recurrenceId; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    @NonNull public String getUserId() { return userId; }
-    public void setUserId(@NonNull String userId) { this.userId = userId; }
+    public int getUser_id() { return user_id; }
+    public void setUser_id(int user_id) { this.user_id = user_id; }
 
     @NonNull public String getFrequency() { return frequency; }
     public void setFrequency(@NonNull String frequency) { this.frequency = frequency; }
@@ -76,24 +60,24 @@ public class RecurrenceRule {
     public int getInterval() { return interval; }
     public void setInterval(int interval) { this.interval = interval; }
 
-    public String getDaysOfWeek() { return daysOfWeek; }
-    public void setDaysOfWeek(String daysOfWeek) { this.daysOfWeek = daysOfWeek; }
+    public String getDays_of_week() { return days_of_week; }
+    public void setDays_of_week(String days_of_week) { this.days_of_week = days_of_week; }
 
-    public Integer getDayOfMonth() { return dayOfMonth; }
-    public void setDayOfMonth(Integer dayOfMonth) { this.dayOfMonth = dayOfMonth; }
+    public Integer getDay_of_month() { return day_of_month; }
+    public void setDay_of_month(Integer day_of_month) { this.day_of_month = day_of_month; }
 
-    @NonNull public Date getStartDate() { return startDate; }
-    public void setStartDate(@NonNull Date startDate) { this.startDate = startDate; }
+    @NonNull public Date getStart_date() { return start_date; }
+    public void setStart_date(@NonNull Date start_date) { this.start_date = start_date; }
 
-    public Date getEndDate() { return endDate; }
-    public void setEndDate(Date endDate) { this.endDate = endDate; }
+    public Date getEnd_date() { return end_date; }
+    public void setEnd_date(Date end_date) { this.end_date = end_date; }
 
-    public Integer getMaxOccurrences() { return maxOccurrences; }
-    public void setMaxOccurrences(Integer maxOccurrences) { this.maxOccurrences = maxOccurrences; }
+    public Integer getMax_occurrences() { return max_occurrences; }
+    public void setMax_occurrences(Integer max_occurrences) { this.max_occurrences = max_occurrences; }
 
-    public int getIsActive() { return isActive; }
-    public void setIsActive(int isActive) { this.isActive = isActive; }
+    public int getIs_active() { return is_active; }
+    public void setIs_active(int is_active) { this.is_active = is_active; }
 
-    @NonNull public Date getCreatedAt() { return createdAt; }
-    public void setCreatedAt(@NonNull Date createdAt) { this.createdAt = createdAt; }
+    @NonNull public Date getCreated_at() { return created_at; }
+    public void setCreated_at(@NonNull Date created_at) { this.created_at = created_at; }
 }

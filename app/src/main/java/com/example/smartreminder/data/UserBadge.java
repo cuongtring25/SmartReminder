@@ -1,44 +1,44 @@
 package com.example.smartreminder.data;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
+import androidx.room.PrimaryKey;
 import java.util.Date;
 
 @Entity(tableName = "user_badges",
-        primaryKeys = {"user_id", "badge_id"},
         foreignKeys = {
-                @ForeignKey(entity = User.class, parentColumns = "user_id", childColumns = "user_id", onDelete = ForeignKey.CASCADE),
-                @ForeignKey(entity = Badge.class, parentColumns = "badge_id", childColumns = "badge_id", onDelete = ForeignKey.CASCADE)
+                @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "user_id", onDelete = ForeignKey.CASCADE),
+                @ForeignKey(entity = Badge.class, parentColumns = "id", childColumns = "badge_id", onDelete = ForeignKey.CASCADE)
         },
         indices = {@Index("badge_id")})
 public class UserBadge {
-    @NonNull
-    @ColumnInfo(name = "user_id")
-    private String userId;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
+
+    private int user_id;
+
+    private int badge_id;
 
     @NonNull
-    @ColumnInfo(name = "badge_id")
-    private String badgeId;
+    private Date earned_at;
 
-    @NonNull
-    @ColumnInfo(name = "earned_at")
-    private Date earnedAt;
-
-    public UserBadge(@NonNull String userId, @NonNull String badgeId, @NonNull Date earnedAt) {
-        this.userId = userId;
-        this.badgeId = badgeId;
-        this.earnedAt = earnedAt;
+    public UserBadge(int user_id, int badge_id, @NonNull Date earned_at) {
+        this.user_id = user_id;
+        this.badge_id = badge_id;
+        this.earned_at = earned_at;
     }
 
-    @NonNull public String getUserId() { return userId; }
-    public void setUserId(@NonNull String userId) { this.userId = userId; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    @NonNull public String getBadgeId() { return badgeId; }
-    public void setBadgeId(@NonNull String badgeId) { this.badgeId = badgeId; }
+    public int getUser_id() { return user_id; }
+    public void setUser_id(int user_id) { this.user_id = user_id; }
 
-    @NonNull public Date getEarnedAt() { return earnedAt; }
-    public void setEarnedAt(@NonNull Date earnedAt) { this.earnedAt = earnedAt; }
+    public int getBadge_id() { return badge_id; }
+    public void setBadge_id(int badge_id) { this.badge_id = badge_id; }
+
+    @NonNull public Date getEarned_at() { return earned_at; }
+    public void setEarned_at(@NonNull Date earned_at) { this.earned_at = earned_at; }
 }

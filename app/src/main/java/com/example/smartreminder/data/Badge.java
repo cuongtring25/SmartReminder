@@ -1,37 +1,31 @@
 package com.example.smartreminder.data;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "badges")
 public class Badge {
-    @PrimaryKey
-    @NonNull
-    @ColumnInfo(name = "badge_id")
-    private String badgeId;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
     @NonNull
     private String name;
 
     private String description;
 
-    @ColumnInfo(name = "icon_url")
-    private String iconUrl;
+    private String icon_url;
 
-    @ColumnInfo(name = "xp_reward")
-    private int xpReward;
+    private int xp_reward;
 
-    public Badge(@NonNull String badgeId, @NonNull String name, String description, int xpReward) {
-        this.badgeId = badgeId;
+    public Badge(@NonNull String name, String description, int xp_reward) {
         this.name = name;
         this.description = description;
-        this.xpReward = xpReward;
+        this.xp_reward = xp_reward;
     }
 
-    @NonNull public String getBadgeId() { return badgeId; }
-    public void setBadgeId(@NonNull String badgeId) { this.badgeId = badgeId; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
     @NonNull public String getName() { return name; }
     public void setName(@NonNull String name) { this.name = name; }
@@ -39,9 +33,9 @@ public class Badge {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public String getIconUrl() { return iconUrl; }
-    public void setIconUrl(String iconUrl) { this.iconUrl = iconUrl; }
+    public String getIcon_url() { return icon_url; }
+    public void setIcon_url(String icon_url) { this.icon_url = icon_url; }
 
-    public int getXpReward() { return xpReward; }
-    public void setXpReward(int xpReward) { this.xpReward = xpReward; }
+    public int getXp_reward() { return xp_reward; }
+    public void setXp_reward(int xp_reward) { this.xp_reward = xp_reward; }
 }

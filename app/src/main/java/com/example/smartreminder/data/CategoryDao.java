@@ -25,8 +25,8 @@ public interface CategoryDao {
     LiveData<List<Category>> getSystemCategories();
 
     @Query("SELECT * FROM categories WHERE user_id = :userId AND is_deleted = 0 ORDER BY display_order ASC")
-    LiveData<List<Category>> getUserCategories(String userId);
+    LiveData<List<Category>> getUserCategories(int userId);
 
-    @Query("SELECT * FROM categories WHERE category_id = :categoryId LIMIT 1")
-    Category getById(String categoryId);
+    @Query("SELECT * FROM categories WHERE id = :id LIMIT 1")
+    Category getById(int id);
 }

@@ -1,7 +1,6 @@
 package com.example.smartreminder.data;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
@@ -9,97 +8,70 @@ import java.util.Date;
 
 @Entity(tableName = "users", indices = {@Index(value = {"email"}, unique = true)})
 public class User {
-    @PrimaryKey
-    @NonNull
-    @ColumnInfo(name = "user_id")
-    private String userId;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
     @NonNull
     private String email;
 
     @NonNull
-    @ColumnInfo(name = "password_hash")
-    private String passwordHash;
+    private String password_hash;
 
     @NonNull
-    @ColumnInfo(name = "full_name")
-    private String fullName;
+    private String full_name;
 
-    @ColumnInfo(name = "avatar_url")
-    private String avatarUrl;
+    private String avatar_url;
 
     private String phone;
 
-    @ColumnInfo(defaultValue = "light")
-    private String theme;
+    private String theme = "light";
 
-    @ColumnInfo(defaultValue = "vi")
-    private String language;
+    private String language = "vi";
 
-    @ColumnInfo(name = "notification_enabled", defaultValue = "1")
-    private int notificationEnabled;
+    private int notification_enabled = 1;
 
-    // Gamification Fields
-    @ColumnInfo(name = "current_streak", defaultValue = "0")
-    private int currentStreak;
+    private int current_streak = 0;
 
-    @ColumnInfo(name = "longest_streak", defaultValue = "0")
-    private int longestStreak;
+    private int longest_streak = 0;
 
-    @ColumnInfo(defaultValue = "0")
-    private int xp;
+    private int xp = 0;
 
-    @ColumnInfo(defaultValue = "1")
-    private int level;
+    private int level = 1;
 
-    @ColumnInfo(name = "last_completion_date")
-    private Date lastCompletionDate;
+    private Date last_completion_date;
 
     @NonNull
-    @ColumnInfo(name = "created_at")
-    private Date createdAt;
+    private Date created_at;
 
     @NonNull
-    @ColumnInfo(name = "updated_at")
-    private Date updatedAt;
+    private Date updated_at;
 
-    @ColumnInfo(name = "is_deleted", defaultValue = "0")
-    private int isDeleted;
+    private int is_deleted = 0;
 
-    public User(@NonNull String userId, @NonNull String email, @NonNull String passwordHash, @NonNull String fullName, String phone, String avatarUrl, Date createdAt, Date updatedAt) {
-        this.userId = userId;
+    public User(@NonNull String email, @NonNull String password_hash, @NonNull String full_name, String phone, String avatar_url) {
         this.email = email;
-        this.passwordHash = passwordHash;
-        this.fullName = fullName;
+        this.password_hash = password_hash;
+        this.full_name = full_name;
         this.phone = phone;
-        this.avatarUrl = avatarUrl;
-        this.createdAt = createdAt != null ? createdAt : new Date();
-        this.updatedAt = updatedAt != null ? updatedAt : new Date();
-        this.theme = "light";
-        this.language = "vi";
-        this.notificationEnabled = 1;
-        this.currentStreak = 0;
-        this.longestStreak = 0;
-        this.xp = 0;
-        this.level = 1;
-        this.isDeleted = 0;
+        this.avatar_url = avatar_url;
+        this.created_at = new Date();
+        this.updated_at = new Date();
     }
 
-    // Getters and Setters
-    @NonNull public String getUserId() { return userId; }
-    public void setUserId(@NonNull String userId) { this.userId = userId; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
     @NonNull public String getEmail() { return email; }
     public void setEmail(@NonNull String email) { this.email = email; }
 
-    @NonNull public String getPasswordHash() { return passwordHash; }
-    public void setPasswordHash(@NonNull String passwordHash) { this.passwordHash = passwordHash; }
+    @NonNull public String getPassword_hash() { return password_hash; }
+    public void setPassword_hash(@NonNull String password_hash) { this.password_hash = password_hash; }
 
-    @NonNull public String getFullName() { return fullName; }
-    public void setFullName(@NonNull String fullName) { this.fullName = fullName; }
+    @NonNull public String getFull_name() { return full_name; }
+    public void setFull_name(@NonNull String full_name) { this.full_name = full_name; }
 
-    public String getAvatarUrl() { return avatarUrl; }
-    public void setAvatarUrl(String avatarUrl) { this.avatarUrl = avatarUrl; }
+    public String getAvatar_url() { return avatar_url; }
+    public void setAvatar_url(String avatar_url) { this.avatar_url = avatar_url; }
 
     public String getPhone() { return phone; }
     public void setPhone(String phone) { this.phone = phone; }
@@ -110,14 +82,14 @@ public class User {
     public String getLanguage() { return language; }
     public void setLanguage(String language) { this.language = language; }
 
-    public int getNotificationEnabled() { return notificationEnabled; }
-    public void setNotificationEnabled(int notificationEnabled) { this.notificationEnabled = notificationEnabled; }
+    public int getNotification_enabled() { return notification_enabled; }
+    public void setNotification_enabled(int notification_enabled) { this.notification_enabled = notification_enabled; }
 
-    public int getCurrentStreak() { return currentStreak; }
-    public void setCurrentStreak(int currentStreak) { this.currentStreak = currentStreak; }
+    public int getCurrent_streak() { return current_streak; }
+    public void setCurrent_streak(int current_streak) { this.current_streak = current_streak; }
 
-    public int getLongestStreak() { return longestStreak; }
-    public void setLongestStreak(int longestStreak) { this.longestStreak = longestStreak; }
+    public int getLongest_streak() { return longest_streak; }
+    public void setLongest_streak(int longest_streak) { this.longest_streak = longest_streak; }
 
     public int getXp() { return xp; }
     public void setXp(int xp) { this.xp = xp; }
@@ -125,15 +97,15 @@ public class User {
     public int getLevel() { return level; }
     public void setLevel(int level) { this.level = level; }
 
-    public Date getLastCompletionDate() { return lastCompletionDate; }
-    public void setLastCompletionDate(Date lastCompletionDate) { this.lastCompletionDate = lastCompletionDate; }
+    public Date getLast_completion_date() { return last_completion_date; }
+    public void setLast_completion_date(Date last_completion_date) { this.last_completion_date = last_completion_date; }
 
-    @NonNull public Date getCreatedAt() { return createdAt; }
-    public void setCreatedAt(@NonNull Date createdAt) { this.createdAt = createdAt; }
+    @NonNull public Date getCreated_at() { return created_at; }
+    public void setCreated_at(@NonNull Date created_at) { this.created_at = created_at; }
 
-    @NonNull public Date getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(@NonNull Date updatedAt) { this.updatedAt = updatedAt; }
+    @NonNull public Date getUpdated_at() { return updated_at; }
+    public void setUpdated_at(@NonNull Date updated_at) { this.updated_at = updated_at; }
 
-    public int getIsDeleted() { return isDeleted; }
-    public void setIsDeleted(int isDeleted) { this.isDeleted = isDeleted; }
+    public int getIs_deleted() { return is_deleted; }
+    public void setIs_deleted(int is_deleted) { this.is_deleted = is_deleted; }
 }

@@ -28,21 +28,21 @@ public interface ReminderDao {
     LiveData<List<Reminder>> getAllReminders();
 
     @Query("SELECT * FROM reminders WHERE user_id = :userId AND is_deleted = 0 ORDER BY due_date ASC")
-    LiveData<List<Reminder>> getRemindersByUser(String userId);
+    LiveData<List<Reminder>> getRemindersByUser(int userId);
 
     @Query("SELECT * FROM reminders WHERE category_id = :categoryId AND is_deleted = 0")
-    LiveData<List<Reminder>> getRemindersByCategory(String categoryId);
+    LiveData<List<Reminder>> getRemindersByCategory(int categoryId);
 
     @Query("SELECT * FROM reminders WHERE status = :status AND is_deleted = 0")
     LiveData<List<Reminder>> getRemindersByStatus(String status);
 
     // Stats for Dashboard
     @Query("SELECT COUNT(*) FROM reminders WHERE user_id = :userId AND DATE(due_date/1000, 'unixepoch') = DATE(:today/1000, 'unixepoch') AND is_deleted = 0")
-    LiveData<Integer> getTodayTasksCount(String userId, long today);
+    LiveData<Integer> getTodayTasksCount(int userId, long today);
 
     @Query("SELECT COUNT(*) FROM reminders WHERE user_id = :userId AND status = 'done' AND DATE(due_date/1000, 'unixepoch') = DATE(:today/1000, 'unixepoch') AND is_deleted = 0")
-    LiveData<Integer> getTodayCompletedCount(String userId, long today);
+    LiveData<Integer> getTodayCompletedCount(int userId, long today);
 
     @Query("SELECT COUNT(*) FROM reminders WHERE user_id = :userId AND status = 'done' AND is_deleted = 0")
-    LiveData<Integer> getTotalCompletedCount(String userId);
+    LiveData<Integer> getTotalCompletedCount(int userId);
 }

@@ -1,7 +1,6 @@
 package com.example.smartreminder.data;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
@@ -10,9 +9,9 @@ import java.util.Date;
 
 @Entity(tableName = "reminders",
         foreignKeys = {
-                @ForeignKey(entity = User.class, parentColumns = "user_id", childColumns = "user_id", onDelete = ForeignKey.CASCADE),
-                @ForeignKey(entity = Category.class, parentColumns = "category_id", childColumns = "category_id", onDelete = ForeignKey.SET_NULL),
-                @ForeignKey(entity = RecurrenceRule.class, parentColumns = "recurrence_id", childColumns = "recurrence_id", onDelete = ForeignKey.SET_NULL)
+                @ForeignKey(entity = User.class, parentColumns = "id", childColumns = "user_id", onDelete = ForeignKey.CASCADE),
+                @ForeignKey(entity = Category.class, parentColumns = "id", childColumns = "category_id", onDelete = ForeignKey.SET_NULL),
+                @ForeignKey(entity = RecurrenceRule.class, parentColumns = "id", childColumns = "recurrence_id", onDelete = ForeignKey.SET_NULL)
         },
         indices = {
                 @Index(value = "user_id", name = "idx_reminders_user_id"),
@@ -23,17 +22,12 @@ import java.util.Date;
                 @Index("recurrence_id")
         })
 public class Reminder {
-    @PrimaryKey
-    @NonNull
-    @ColumnInfo(name = "reminder_id")
-    private String reminderId;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
-    @NonNull
-    @ColumnInfo(name = "user_id")
-    private String userId;
+    private int user_id;
 
-    @ColumnInfo(name = "category_id")
-    private String categoryId;
+    private Integer category_id;
 
     @NonNull
     private String title;
@@ -41,64 +35,48 @@ public class Reminder {
     private String description;
 
     @NonNull
-    @ColumnInfo(name = "due_date")
-    private Date dueDate;
+    private Date due_date;
 
     @NonNull
-    @ColumnInfo(name = "remind_at")
-    private Date remindAt;
+    private Date remind_at;
 
-    @ColumnInfo(defaultValue = "2")
-    private int priority; // 1-Low, 2-Medium, 3-High
+    private int priority = 2;
 
-    @ColumnInfo(defaultValue = "pending")
-    private String status; // pending, done, snoozed, missed
+    private String status = "pending";
 
-    @ColumnInfo(name = "is_recurring", defaultValue = "0")
-    private int isRecurring;
+    private int is_recurring = 0;
 
-    @ColumnInfo(name = "recurrence_id")
-    private String recurrenceId;
+    private Integer recurrence_id;
 
     private String location;
 
-    @ColumnInfo(name = "attachment_url")
-    private String attachmentUrl;
+    private String attachment_url;
 
     @NonNull
-    @ColumnInfo(name = "created_at")
-    private Date createdAt;
+    private Date created_at;
 
     @NonNull
-    @ColumnInfo(name = "updated_at")
-    private Date updatedAt;
+    private Date updated_at;
 
-    @ColumnInfo(name = "is_deleted", defaultValue = "0")
-    private int isDeleted;
+    private int is_deleted = 0;
 
-    public Reminder(@NonNull String reminderId, @NonNull String userId, @NonNull String title, @NonNull Date dueDate, @NonNull Date remindAt, Date createdAt, Date updatedAt) {
-        this.reminderId = reminderId;
-        this.userId = userId;
+    public Reminder(int user_id, @NonNull String title, @NonNull Date due_date, @NonNull Date remind_at) {
+        this.user_id = user_id;
         this.title = title;
-        this.dueDate = dueDate;
-        this.remindAt = remindAt;
-        this.createdAt = createdAt != null ? createdAt : new Date();
-        this.updatedAt = updatedAt != null ? updatedAt : new Date();
-        this.priority = 2;
-        this.status = "pending";
-        this.isRecurring = 0;
-        this.isDeleted = 0;
+        this.due_date = due_date;
+        this.remind_at = remind_at;
+        this.created_at = new Date();
+        this.updated_at = new Date();
     }
 
-    // Getters and Setters
-    @NonNull public String getReminderId() { return reminderId; }
-    public void setReminderId(@NonNull String reminderId) { this.reminderId = reminderId; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    @NonNull public String getUserId() { return userId; }
-    public void setUserId(@NonNull String userId) { this.userId = userId; }
+    public int getUser_id() { return user_id; }
+    public void setUser_id(int user_id) { this.user_id = user_id; }
 
-    public String getCategoryId() { return categoryId; }
-    public void setCategoryId(String categoryId) { this.categoryId = categoryId; }
+    public Integer getCategory_id() { return category_id; }
+    public void setCategory_id(Integer category_id) { this.category_id = category_id; }
 
     @NonNull public String getTitle() { return title; }
     public void setTitle(@NonNull String title) { this.title = title; }
@@ -106,11 +84,11 @@ public class Reminder {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    @NonNull public Date getDueDate() { return dueDate; }
-    public void setDueDate(@NonNull Date dueDate) { this.dueDate = dueDate; }
+    @NonNull public Date getDue_date() { return due_date; }
+    public void setDue_date(@NonNull Date due_date) { this.due_date = due_date; }
 
-    @NonNull public Date getRemindAt() { return remindAt; }
-    public void setRemindAt(@NonNull Date remindAt) { this.remindAt = remindAt; }
+    @NonNull public Date getRemind_at() { return remind_at; }
+    public void setRemind_at(@NonNull Date remind_at) { this.remind_at = remind_at; }
 
     public int getPriority() { return priority; }
     public void setPriority(int priority) { this.priority = priority; }
@@ -118,24 +96,24 @@ public class Reminder {
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
 
-    public int getIsRecurring() { return isRecurring; }
-    public void setIsRecurring(int isRecurring) { this.isRecurring = isRecurring; }
+    public int getIs_recurring() { return is_recurring; }
+    public void setIs_recurring(int is_recurring) { this.is_recurring = is_recurring; }
 
-    public String getRecurrenceId() { return recurrenceId; }
-    public void setRecurrenceId(String recurrenceId) { this.recurrenceId = recurrenceId; }
+    public Integer getRecurrence_id() { return recurrence_id; }
+    public void setRecurrence_id(Integer recurrence_id) { this.recurrence_id = recurrence_id; }
 
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
 
-    public String getAttachmentUrl() { return attachmentUrl; }
-    public void setAttachmentUrl(String attachmentUrl) { this.attachmentUrl = attachmentUrl; }
+    public String getAttachment_url() { return attachment_url; }
+    public void setAttachment_url(String attachment_url) { this.attachment_url = attachment_url; }
 
-    @NonNull public Date getCreatedAt() { return createdAt; }
-    public void setCreatedAt(@NonNull Date createdAt) { this.createdAt = createdAt; }
+    @NonNull public Date getCreated_at() { return created_at; }
+    public void setCreated_at(@NonNull Date created_at) { this.created_at = created_at; }
 
-    @NonNull public Date getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(@NonNull Date updatedAt) { this.updatedAt = updatedAt; }
+    @NonNull public Date getUpdated_at() { return updated_at; }
+    public void setUpdated_at(@NonNull Date updated_at) { this.updated_at = updated_at; }
 
-    public int getIsDeleted() { return isDeleted; }
-    public void setIsDeleted(int isDeleted) { this.isDeleted = isDeleted; }
+    public int getIs_deleted() { return is_deleted; }
+    public void setIs_deleted(int is_deleted) { this.is_deleted = is_deleted; }
 }

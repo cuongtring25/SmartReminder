@@ -22,8 +22,8 @@ public interface RecurrenceRuleDao {
     void delete(RecurrenceRule rule);
 
     @Query("SELECT * FROM recurrence_rules WHERE user_id = :userId AND is_active = 1")
-    LiveData<List<RecurrenceRule>> getActiveRulesByUser(String userId);
+    LiveData<List<RecurrenceRule>> getActiveRulesByUser(int userId);
 
-    @Query("SELECT * FROM recurrence_rules WHERE recurrence_id = :recurrenceId LIMIT 1")
-    RecurrenceRule getById(String recurrenceId);
+    @Query("SELECT * FROM recurrence_rules WHERE id = :id LIMIT 1")
+    RecurrenceRule getById(int id);
 }

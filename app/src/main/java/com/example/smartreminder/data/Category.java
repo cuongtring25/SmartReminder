@@ -1,7 +1,6 @@
 package com.example.smartreminder.data;
 
 import androidx.annotation.NonNull;
-import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
@@ -10,18 +9,15 @@ import java.util.Date;
 
 @Entity(tableName = "categories",
         foreignKeys = @ForeignKey(entity = User.class,
-                parentColumns = "user_id",
+                parentColumns = "id",
                 childColumns = "user_id",
                 onDelete = ForeignKey.CASCADE),
         indices = {@Index("user_id")})
 public class Category {
-    @PrimaryKey
-    @NonNull
-    @ColumnInfo(name = "category_id")
-    private String categoryId;
+    @PrimaryKey(autoGenerate = true)
+    private int id;
 
-    @ColumnInfo(name = "user_id")
-    private String userId;
+    private Integer user_id;
 
     @NonNull
     private String name;
@@ -30,40 +26,30 @@ public class Category {
 
     private String color;
 
-    @ColumnInfo(name = "is_system", defaultValue = "0")
-    private int isSystem;
+    private int is_system = 0;
 
-    @ColumnInfo(name = "display_order", defaultValue = "0")
-    private int displayOrder;
+    private int display_order = 0;
 
-    @ColumnInfo(name = "is_deleted", defaultValue = "0")
-    private int isDeleted;
+    private int is_deleted = 0;
 
     @NonNull
-    @ColumnInfo(name = "created_at")
-    private Date createdAt;
+    private Date created_at;
 
     @NonNull
-    @ColumnInfo(name = "updated_at")
-    private Date updatedAt;
+    private Date updated_at;
 
-    public Category(@NonNull String categoryId, String userId, @NonNull String name, Date createdAt, Date updatedAt) {
-        this.categoryId = categoryId;
-        this.userId = userId;
+    public Category(Integer user_id, @NonNull String name) {
+        this.user_id = user_id;
         this.name = name;
-        this.createdAt = createdAt != null ? createdAt : new Date();
-        this.updatedAt = updatedAt != null ? updatedAt : new Date();
-        this.isSystem = 0;
-        this.displayOrder = 0;
-        this.isDeleted = 0;
+        this.created_at = new Date();
+        this.updated_at = new Date();
     }
 
-    // Getters and Setters
-    @NonNull public String getCategoryId() { return categoryId; }
-    public void setCategoryId(@NonNull String categoryId) { this.categoryId = categoryId; }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public String getUserId() { return userId; }
-    public void setUserId(String userId) { this.userId = userId; }
+    public Integer getUser_id() { return user_id; }
+    public void setUser_id(Integer user_id) { this.user_id = user_id; }
 
     @NonNull public String getName() { return name; }
     public void setName(@NonNull String name) { this.name = name; }
@@ -74,18 +60,18 @@ public class Category {
     public String getColor() { return color; }
     public void setColor(String color) { this.color = color; }
 
-    public int getIsSystem() { return isSystem; }
-    public void setIsSystem(int isSystem) { this.isSystem = isSystem; }
+    public int getIs_system() { return is_system; }
+    public void setIs_system(int is_system) { this.is_system = is_system; }
 
-    public int getDisplayOrder() { return displayOrder; }
-    public void setDisplayOrder(int displayOrder) { this.displayOrder = displayOrder; }
+    public int getDisplay_order() { return display_order; }
+    public void setDisplay_order(int display_order) { this.display_order = display_order; }
 
-    public int getIsDeleted() { return isDeleted; }
-    public void setIsDeleted(int isDeleted) { this.isDeleted = isDeleted; }
+    public int getIs_deleted() { return is_deleted; }
+    public void setIs_deleted(int is_deleted) { this.is_deleted = is_deleted; }
 
-    @NonNull public Date getCreatedAt() { return createdAt; }
-    public void setCreatedAt(@NonNull Date createdAt) { this.createdAt = createdAt; }
+    @NonNull public Date getCreated_at() { return created_at; }
+    public void setCreated_at(@NonNull Date created_at) { this.created_at = created_at; }
 
-    @NonNull public Date getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(@NonNull Date updatedAt) { this.updatedAt = updatedAt; }
+    @NonNull public Date getUpdated_at() { return updated_at; }
+    public void setUpdated_at(@NonNull Date updated_at) { this.updated_at = updated_at; }
 }
