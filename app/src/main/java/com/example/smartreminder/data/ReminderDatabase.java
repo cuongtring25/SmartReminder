@@ -56,7 +56,8 @@ public abstract class ReminderDatabase extends RoomDatabase {
 
                 // 1. Create System Admin
                 String adminId = UUID.randomUUID().toString();
-                User admin = new User(adminId, "admin@example.com", "hash_123456", "System Admin", new Date(), new Date());
+                // Updated with null for phone and avatarUrl
+                User admin = new User(adminId, "admin@example.com", "hash_123456", "System Admin", null, null, new Date(), new Date());
                 admin.setLevel(1);
                 admin.setXp(150);
                 admin.setCurrentStreak(4);
@@ -74,7 +75,6 @@ public abstract class ReminderDatabase extends RoomDatabase {
                 categoryDao.insert(cat2);
 
                 // 3. Create Demo Reminders for Today (to show 20% completion like in image)
-                // We need 5 tasks, 1 completed (1/5 = 20%)
                 long today = System.currentTimeMillis();
                 
                 // Completed Task

@@ -66,11 +66,13 @@ public class User {
     @ColumnInfo(name = "is_deleted", defaultValue = "0")
     private int isDeleted;
 
-    public User(@NonNull String userId, @NonNull String email, @NonNull String passwordHash, @NonNull String fullName, Date createdAt, Date updatedAt) {
+    public User(@NonNull String userId, @NonNull String email, @NonNull String passwordHash, @NonNull String fullName, String phone, String avatarUrl, Date createdAt, Date updatedAt) {
         this.userId = userId;
         this.email = email;
         this.passwordHash = passwordHash;
         this.fullName = fullName;
+        this.phone = phone;
+        this.avatarUrl = avatarUrl;
         this.createdAt = createdAt != null ? createdAt : new Date();
         this.updatedAt = updatedAt != null ? updatedAt : new Date();
         this.theme = "light";
