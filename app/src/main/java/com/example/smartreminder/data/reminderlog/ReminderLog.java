@@ -29,7 +29,7 @@ public class ReminderLog {
     private int user_id;
 
     @NonNull
-    private String status; // done, snoozed, dismissed
+    private String action; // done, snoozed, dismissed
 
     @NonNull
     private Date actioned_at;
@@ -44,7 +44,7 @@ public class ReminderLog {
     public ReminderLog(int reminder_id, int user_id, @NonNull String action, @NonNull Date actioned_at) {
         this.reminder_id = reminder_id;
         this.user_id = user_id;
-        this.status = action;
+        this.action = action;
         this.actioned_at = actioned_at;
         this.created_at = new Date();
     }
@@ -59,8 +59,8 @@ public class ReminderLog {
     public int getUser_id() { return user_id; }
     public void setUser_id(int user_id) { this.user_id = user_id; }
 
-    @NonNull public String getStatus() { return status; }
-    public void setStatus(@NonNull String action) { this.status = action; }
+    @NonNull public String getAction() { return action; }
+    public void setAction(@NonNull String action) { this.action = action; }
 
     @NonNull public Date getActioned_at() { return actioned_at; }
     public void setActioned_at(@NonNull Date actioned_at) { this.actioned_at = actioned_at; }
