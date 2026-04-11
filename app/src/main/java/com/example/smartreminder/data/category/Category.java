@@ -1,23 +1,19 @@
-package com.example.smartreminder.data;
+package com.example.smartreminder.data.category;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import com.example.smartreminder.data.user.User;
+
 import java.util.Date;
 
-@Entity(tableName = "categories",
-        foreignKeys = @ForeignKey(entity = User.class,
-                parentColumns = "id",
-                childColumns = "user_id",
-                onDelete = ForeignKey.CASCADE),
-        indices = {@Index("user_id")})
+@Entity(tableName = "categories")
 public class Category {
     @PrimaryKey(autoGenerate = true)
     private int id;
-
-    private Integer user_id;
 
     @NonNull
     private String name;
@@ -38,8 +34,7 @@ public class Category {
     @NonNull
     private Date updated_at;
 
-    public Category(Integer user_id, @NonNull String name) {
-        this.user_id = user_id;
+    public Category(@NonNull String name) {
         this.name = name;
         this.created_at = new Date();
         this.updated_at = new Date();
@@ -48,8 +43,7 @@ public class Category {
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
-    public Integer getUser_id() { return user_id; }
-    public void setUser_id(Integer user_id) { this.user_id = user_id; }
+
 
     @NonNull public String getName() { return name; }
     public void setName(@NonNull String name) { this.name = name; }

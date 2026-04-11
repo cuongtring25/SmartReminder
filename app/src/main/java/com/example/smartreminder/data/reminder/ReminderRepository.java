@@ -1,8 +1,10 @@
-package com.example.smartreminder.data;
+package com.example.smartreminder.data.reminder;
 
 import android.app.Application;
 
 import androidx.lifecycle.LiveData;
+
+import com.example.smartreminder.data.ReminderDatabase;
 
 import java.util.List;
 
@@ -21,9 +23,7 @@ public class ReminderRepository {
         return mAllReminders;
     }
 
-    public LiveData<List<Reminder>> getRemindersByCategory(int categoryId) {
-        return mReminderDao.getRemindersByCategory(categoryId);
-    }
+
 
     public void insert(Reminder reminder) {
         ReminderDatabase.databaseWriteExecutor.execute(() -> {

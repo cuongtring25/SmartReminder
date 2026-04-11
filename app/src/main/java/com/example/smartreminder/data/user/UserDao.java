@@ -1,4 +1,4 @@
-package com.example.smartreminder.data;
+package com.example.smartreminder.data.user;
 
 import androidx.room.Dao;
 import androidx.room.Insert;

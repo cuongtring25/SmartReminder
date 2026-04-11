@@ -42,7 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
-        android:hint="Mật khẩu"
+        android:hint="password"
         app:passwordToggleEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -56,7 +56,7 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:text="Đăng nhập"
+        android:text="Log in"
         android:textAllCaps="false"
         android:textSize="16sp"
         app:cornerRadius="8dp" />
@@ -65,7 +65,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:text="Chưa có tài khoản? Đăng ký ngay"
+        android:text="Dont have account? register here!"
         android:textColor="@color/primary" />
 
 </LinearLayout>

@@ -1,15 +1,21 @@
 package com.example.smartreminder;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -17,7 +23,8 @@ public class MainActivity extends AppCompatActivity {
     private StatsFragment statsFragment;
     private ProfileFragment profileFragment;
     private TextView tvStreakCount;
-    private int currentStreak = 4; // Mock value
+    private ImageView ivStreak;
+    private int currentStreak = 0;
     private boolean isStreakCountedToday = false;
 
     @Override
@@ -32,15 +39,24 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        tvStreakCount = findViewById(R.id.tvStreakCount);
-        tvStreakCount.setText(String.valueOf(currentStreak));
+        // taking user id from SharedPreferences
+        SharedPreferences pref = getSharedPreferences("UserSession", Context.MODE_PRIVATE);
+        currentStreak = pref.getInt("currentStreak", 0);
 
+
+        // Initialize fragments
         homeFragment = new HomeFragment();
         statsFragment = new StatsFragment();
         profileFragment = new ProfileFragment();
 
         // Default fragment
         loadFragment(homeFragment);
+
+        tvStreakCount = findViewById(R.id.tvStreakCount);
+        ivStreak = findViewById(R.id.ivStreak);
+        
+        tvStreakCount.setText(String.valueOf(currentStreak));
+        updateStreakIcon();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnItemSelectedListener(item -> {
@@ -81,6 +97,15 @@ public class MainActivity extends AppCompatActivity {
             currentStreak--;
             isStreakCountedToday = false;
             tvStreakCount.setText(String.valueOf(currentStreak));
+        }
+        updateStreakIcon();
+    }
+
+    private void updateStreakIcon() {
+        if (isStreakCountedToday) {
+            ivStreak.setImageResource(R.drawable.ic_fire);
+        } else {
+            ivStreak.setImageResource(R.drawable.ic_fire_gray);
         }
     }
 }

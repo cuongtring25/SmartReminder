@@ -1,4 +1,4 @@
-package com.example.smartreminder.data;
+package com.example.smartreminder.data.badge;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

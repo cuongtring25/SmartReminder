@@ -1,10 +1,15 @@
-package com.example.smartreminder.data;
+package com.example.smartreminder.data.reminder;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import com.example.smartreminder.data.category.Category;
+import com.example.smartreminder.data.recurrencerule.RecurrenceRule;
+import com.example.smartreminder.data.user.User;
+
 import java.util.Date;
 
 @Entity(tableName = "reminders",
@@ -50,6 +55,10 @@ public class Reminder {
 
     private String location;
 
+    private Double latitude;
+    private Double longitude;
+    private Double radius;
+
     private String attachment_url;
 
     @NonNull
@@ -60,8 +69,9 @@ public class Reminder {
 
     private int is_deleted = 0;
 
-    public Reminder(int user_id, @NonNull String title, @NonNull Date due_date, @NonNull Date remind_at) {
+    public Reminder(int user_id,int category_id, @NonNull String title, @NonNull Date due_date, @NonNull Date remind_at) {
         this.user_id = user_id;
+        this.category_id = category_id;
         this.title = title;
         this.due_date = due_date;
         this.remind_at = remind_at;
@@ -116,4 +126,28 @@ public class Reminder {
 
     public int getIs_deleted() { return is_deleted; }
     public void setIs_deleted(int is_deleted) { this.is_deleted = is_deleted; }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getRadius() {
+        return radius;
+    }
+
+    public void setRadius(Double radius) {
+        this.radius = radius;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
 }

@@ -8,19 +8,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.smartreminder.data.reminder.Reminder;
+
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
 
-    private List<Schedule> schedules;
+    private List<Reminder> reminders;
     private OnScheduleChangeListener listener;
+    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
     public interface OnScheduleChangeListener {
-        void onScheduleChanged();
+        void onScheduleChanged(Reminder reminder);
     }
 
-    public ScheduleAdapter(List<Schedule> schedules, OnScheduleChangeListener listener) {
-        this.schedules = schedules;
+    public ScheduleAdapter(List<Reminder> reminders, OnScheduleChangeListener listener) {
+        this.reminders = reminders;
         this.listener = listener;
     }
 
@@ -33,25 +39,40 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Schedule schedule = schedules.get(position);
-        holder.tvActivityName.setText(schedule.getActivityName());
-        holder.tvTime.setText(String.format("%s - %s", schedule.getStartTime(), schedule.getEndTime()));
-        holder.tvLocation.setText(schedule.getLocation());
-        holder.ivAlarm.setVisibility(schedule.isAlarmSet() ? View.VISIBLE : View.GONE);
+        Reminder reminder = reminders.get(position);
+        holder.tvActivityName.setText(reminder.getTitle());
+        
+        String startTime = timeFormat.format(reminder.getDue_date());
+        String endTime = timeFormat.format(reminder.getRemind_at());
+        holder.tvTime.setText(String.format("%s - %s", startTime, endTime));
+        
+        holder.tvLocation.setText(reminder.getLocation() != null ? reminder.getLocation() : "");
+        
+        holder.ivAlarm.setVisibility(reminder.getRemind_at() != null ? View.VISIBLE : View.GONE);
         
         holder.cbCompleted.setOnCheckedChangeListener(null);
-        holder.cbCompleted.setChecked(schedule.isCompleted());
+        holder.cbCompleted.setChecked(reminder.getStatus().equals("completed"));
+        
+        // update UI when status is changed
+        if ("completed".equals(reminder.getStatus())) {
+            holder.tvActivityName.setAlpha(0.5f);
+        } else {
+            holder.tvActivityName.setAlpha(1.0f);
+        }
+
         holder.cbCompleted.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            schedule.setCompleted(isChecked);
+            reminder.setStatus(isChecked ? "completed" : "pending");
             if (listener != null) {
-                listener.onScheduleChanged();
+                listener.onScheduleChanged(reminder);
             }
+            // update alpha right away
+            holder.tvActivityName.setAlpha(isChecked ? 0.5f : 1.0f);
         });
     }
 
     @Override
     public int getItemCount() {
-        return schedules.size();
+        return reminders.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

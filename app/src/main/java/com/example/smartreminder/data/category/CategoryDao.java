@@ -1,4 +1,4 @@
-package com.example.smartreminder.data;
+package com.example.smartreminder.data.category;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -24,9 +24,8 @@ public interface CategoryDao {
     @Query("SELECT * FROM categories WHERE is_system = 1 AND is_deleted = 0 ORDER BY display_order ASC")
     LiveData<List<Category>> getSystemCategories();
 
-    @Query("SELECT * FROM categories WHERE user_id = :userId AND is_deleted = 0 ORDER BY display_order ASC")
-    LiveData<List<Category>> getUserCategories(int userId);
-
     @Query("SELECT * FROM categories WHERE id = :id LIMIT 1")
     Category getById(int id);
+    @Query("SELECT * FROM categories WHERE is_deleted = 0")
+    List<Category> getAllCategories();
 }

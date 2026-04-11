@@ -1,10 +1,14 @@
-package com.example.smartreminder.data;
+package com.example.smartreminder.data.reminderlog;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import com.example.smartreminder.data.reminder.Reminder;
+import com.example.smartreminder.data.user.User;
+
 import java.util.Date;
 
 @Entity(tableName = "reminder_logs",
@@ -25,7 +29,7 @@ public class ReminderLog {
     private int user_id;
 
     @NonNull
-    private String action; // done, snoozed, dismissed
+    private String status; // done, snoozed, dismissed
 
     @NonNull
     private Date actioned_at;
@@ -40,7 +44,7 @@ public class ReminderLog {
     public ReminderLog(int reminder_id, int user_id, @NonNull String action, @NonNull Date actioned_at) {
         this.reminder_id = reminder_id;
         this.user_id = user_id;
-        this.action = action;
+        this.status = action;
         this.actioned_at = actioned_at;
         this.created_at = new Date();
     }
@@ -55,8 +59,8 @@ public class ReminderLog {
     public int getUser_id() { return user_id; }
     public void setUser_id(int user_id) { this.user_id = user_id; }
 
-    @NonNull public String getAction() { return action; }
-    public void setAction(@NonNull String action) { this.action = action; }
+    @NonNull public String getStatus() { return status; }
+    public void setStatus(@NonNull String action) { this.status = action; }
 
     @NonNull public Date getActioned_at() { return actioned_at; }
     public void setActioned_at(@NonNull Date actioned_at) { this.actioned_at = actioned_at; }

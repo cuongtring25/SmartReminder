@@ -34,9 +34,10 @@
                 android:layout_marginEnd="8dp">
 
                 <ImageView
+                    android:id="@+id/ivStreak"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:src="@drawable/ic_fire" />
+                    android:src="@drawable/ic_fire_gray" />
 
                 <TextView
                     android:id="@+id/tvStreakCount"

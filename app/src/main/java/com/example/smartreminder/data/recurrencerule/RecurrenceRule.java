@@ -1,23 +1,19 @@
-package com.example.smartreminder.data;
+package com.example.smartreminder.data.recurrencerule;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import com.example.smartreminder.data.user.User;
+
 import java.util.Date;
 
-@Entity(tableName = "recurrence_rules",
-        foreignKeys = @ForeignKey(entity = User.class,
-                parentColumns = "id",
-                childColumns = "user_id",
-                onDelete = ForeignKey.CASCADE),
-        indices = {@Index("user_id")})
+@Entity(tableName = "recurrence_rules")
 public class RecurrenceRule {
     @PrimaryKey(autoGenerate = true)
     private int id;
-
-    private int user_id;
 
     @NonNull
     private String frequency; // daily, weekly, monthly, custom
@@ -40,8 +36,7 @@ public class RecurrenceRule {
     @NonNull
     private Date created_at;
 
-    public RecurrenceRule(int user_id, @NonNull String frequency, @NonNull Date start_date) {
-        this.user_id = user_id;
+    public RecurrenceRule( @NonNull String frequency, @NonNull Date start_date) {
         this.frequency = frequency;
         this.start_date = start_date;
         this.created_at = new Date();
@@ -51,8 +46,6 @@ public class RecurrenceRule {
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 
-    public int getUser_id() { return user_id; }
-    public void setUser_id(int user_id) { this.user_id = user_id; }
 
     @NonNull public String getFrequency() { return frequency; }
     public void setFrequency(@NonNull String frequency) { this.frequency = frequency; }

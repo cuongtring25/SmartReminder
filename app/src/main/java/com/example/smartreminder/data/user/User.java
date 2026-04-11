@@ -1,4 +1,4 @@
-package com.example.smartreminder.data;
+package com.example.smartreminder.data.user;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;

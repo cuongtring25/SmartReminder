@@ -1,4 +1,4 @@
-package com.example.smartreminder.data;
+package com.example.smartreminder.data.reminderlog;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
@@ -18,6 +18,6 @@ public interface ReminderLogDao {
     @Query("SELECT * FROM reminder_logs WHERE user_id = :userId ORDER BY actioned_at DESC")
     LiveData<List<ReminderLog>> getLogsByUser(String userId);
 
-    @Query("SELECT COUNT(*) FROM reminder_logs WHERE action = 'done' AND user_id = :userId")
+    @Query("SELECT COUNT(*) FROM reminder_logs WHERE status = 'completed' AND user_id = :userId")
     LiveData<Integer> getCompletedCount(String userId);
 }

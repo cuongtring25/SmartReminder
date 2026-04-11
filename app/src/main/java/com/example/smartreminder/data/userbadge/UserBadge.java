@@ -1,10 +1,14 @@
-package com.example.smartreminder.data;
+package com.example.smartreminder.data.userbadge;
 
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.ForeignKey;
 import androidx.room.Index;
 import androidx.room.PrimaryKey;
+
+import com.example.smartreminder.data.badge.Badge;
+import com.example.smartreminder.data.user.User;
+
 import java.util.Date;
 
 @Entity(tableName = "user_badges",
