@@ -1,7 +1,6 @@
 package com.example.smartreminder.data;
 
 import android.content.Context;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.room.Database;
@@ -29,9 +28,29 @@ import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {User.class, Reminder.class, Category.class, ReminderLog.class, RecurrenceRule.class, Badge.class, UserBadge.class}, version = 6, exportSchema = false)
+
+import androidx.room.migration.Migration;
+
+@Database(entities = {User.class, Reminder.class, Category.class, ReminderLog.class, RecurrenceRule.class, Badge.class, UserBadge.class}, version = 8, exportSchema = false)
 @TypeConverters({Converters.class})
 public abstract class ReminderDatabase extends RoomDatabase {
+
+    private static final Migration MIGRATION_6_7 = new Migration(6, 7) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE reminders ADD COLUMN alarm_enabled INTEGER NOT NULL DEFAULT 1");
+        }
+    };
+
+    private static final Migration MIGRATION_7_8 = new Migration(7, 8) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL(
+                    "ALTER TABLE badges ADD COLUMN day_streak_required INTEGER NOT NULL DEFAULT 0");
+            database.execSQL(
+                    "UPDATE badges SET day_streak_required = 7 WHERE LOWER(TRIM(name)) = 'hard worker'");
+        }
+    };
 
     public abstract UserDao userDao();
     public abstract ReminderDao reminderDao();
@@ -52,7 +71,7 @@ public abstract class ReminderDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     ReminderDatabase.class, "reminder_database")
-                            .fallbackToDestructiveMigration()
+                            .addMigrations(MIGRATION_6_7, MIGRATION_7_8)                            .fallbackToDestructiveMigration()
                             .addCallback(sRoomDatabaseCallback)
                             .build();
                 }
@@ -104,8 +123,8 @@ public abstract class ReminderDatabase extends RoomDatabase {
 
                 // 4. Insert Badges (Yêu cầu: name, description, xp_reward)
 
-                long b1 = badgeDao.insert(new Badge("new guy", "complete 1 task", 10));
-                long b2 = badgeDao.insert(new Badge("hard worker", "completed 7 days straight", 50));
+                long b1 = badgeDao.insert(new Badge("new guy", "complete 1 task", 10, 0));
+                long b2 = badgeDao.insert(new Badge("hard worker", "completed 7 days straight", 50, 7));
 
                 // 5. User Badge (Yêu cầu: user_id, badge_id, earned_at)
 

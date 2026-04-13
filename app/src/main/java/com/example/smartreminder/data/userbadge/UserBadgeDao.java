@@ -22,4 +22,7 @@ public interface UserBadgeDao {
 
     @Query("SELECT * FROM user_badges WHERE user_id = :userId")
     List<UserBadge> getBadgesForUser(int userId);
+
+    @Query("SELECT COUNT(*) FROM user_badges WHERE user_id = :userId AND badge_id = :badgeId")
+    int countUserBadge(int userId, int badgeId);
 }

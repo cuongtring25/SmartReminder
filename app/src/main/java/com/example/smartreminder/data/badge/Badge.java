@@ -12,17 +12,21 @@ public class Badge {
     @NonNull
     private String name;
 
-    private String description;
+    private final String description;
 
     private String icon_url;
 
-    private int xp_reward;
+    private final int xp_reward;
 
-    public Badge(@NonNull String name, String description, int xp_reward) {
+    private final int day_streak_required;
+
+    public Badge(@NonNull String name, String description, int xp_reward, int day_streak_required) {
         this.name = name;
         this.description = description;
         this.xp_reward = xp_reward;
+        this.day_streak_required = day_streak_required;
     }
+
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -31,11 +35,11 @@ public class Badge {
     public void setName(@NonNull String name) { this.name = name; }
 
     public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
 
     public String getIcon_url() { return icon_url; }
     public void setIcon_url(String icon_url) { this.icon_url = icon_url; }
 
     public int getXp_reward() { return xp_reward; }
-    public void setXp_reward(int xp_reward) { this.xp_reward = xp_reward; }
+
+    public int getDay_streak_required() { return day_streak_required; }
 }

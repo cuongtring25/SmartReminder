@@ -8,17 +8,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.fragment.app.Fragment;
 
+import android.content.Intent;
+
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 
 public class MainActivity extends AppCompatActivity {
-
+    /** When {@code true}, opens the Home tab (e.g. from a notification tap). */
+    public static final String EXTRA_OPEN_HOME = "extra_open_home";
     private HomeFragment homeFragment;
     private StatsFragment statsFragment;
     private ProfileFragment profileFragment;
@@ -59,6 +63,10 @@ public class MainActivity extends AppCompatActivity {
         updateStreakIcon();
 
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+        if (getIntent() != null && getIntent().getBooleanExtra(EXTRA_OPEN_HOME, false)) {
+            bottomNav.setSelectedItemId(R.id.navigation_home);
+            loadFragment(homeFragment);
+        }
         bottomNav.setOnItemSelectedListener(item -> {
             int id = item.getItemId();
             if (id == R.id.navigation_home) {
@@ -106,6 +114,17 @@ public class MainActivity extends AppCompatActivity {
             ivStreak.setImageResource(R.drawable.ic_fire);
         } else {
             ivStreak.setImageResource(R.drawable.ic_fire_gray);
+        }
+    }
+
+    @Override
+    protected void onNewIntent(@NonNull Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
+        if (intent.getBooleanExtra(EXTRA_OPEN_HOME, false)) {
+            BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
+            bottomNav.setSelectedItemId(R.id.navigation_home);
+            loadFragment(homeFragment);
         }
     }
 }
