@@ -3,8 +3,8 @@ package com.example.smartreminder.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.os.Looper;
-import android.os.SystemClock;
 import android.util.Log;
 
 import com.example.smartreminder.data.ReminderDatabase;
@@ -17,11 +17,9 @@ import com.example.smartreminder.notification.NotificationHelper;
 public class ReminderReceiver extends BroadcastReceiver {
 
     private static final String TAG = "ReminderReceiver";
-    private static final String TAG_TIMING = "ReminderTiming";
 
     public static final String ACTION_REMINDER_START_FIRE = "com.example.smartreminder.action.REMINDER_START_FIRE";
-    public static final String ACTION_REMINDER_END_FIRE = "com.example.smartreminder.action.REMINDER_END_FIRE";
-    public static final String EXTRA_REMINDER_ID = "extra_reminder_id";
+    public static final String ACTION_REMINDER_END_FIRE = "com.example.smartreminder.action.REMINDER_END_FIRE";    public static final String EXTRA_REMINDER_ID = "extra_reminder_id";
     public static final String EXTRA_REMINDER_KIND = "extra_reminder_kind";
     public static final int KIND_START = 0;
     public static final int KIND_END = 1;
@@ -46,18 +44,11 @@ public class ReminderReceiver extends BroadcastReceiver {
             kind = intent.getIntExtra(EXTRA_REMINDER_KIND, KIND_START);
         }
         final int kindFinal = kind;
-
-        final long receivedWallMs = System.currentTimeMillis();
-        final long receivedElapsedMs = SystemClock.elapsedRealtime();
-        Log.d(TAG_TIMING, "RECEIVED id=" + reminderId + " kind=" + kindFinal
-                + " wallMs=" + receivedWallMs + " elapsedMs=" + receivedElapsedMs);
-
         final PendingResult pendingResult = goAsync();
         final Context appCtx = context.getApplicationContext();
 
         ReminderDatabase.databaseWriteExecutor.execute(() -> {
             try {
-                final long workStartElapsed = SystemClock.elapsedRealtime();
                 ReminderDatabase db = ReminderDatabase.getDatabase(appCtx);
                 ReminderDao reminderDao = db.reminderDao();
                 UserDao userDao = db.userDao();
@@ -88,30 +79,23 @@ public class ReminderReceiver extends BroadcastReceiver {
 
                 long now = System.currentTimeMillis();
                 long expectedAt = (kindFinal == KIND_END ? reminder.getDue_date().getTime() : reminder.getRemind_at().getTime());
-                if (expectedAt > now + 60_000L) {
-                    Log.d(TAG, "Ignoring early alarm for reminder " + reminderId + " kind=" + kindFinal);
-                    pendingResult.finish();
-                    return;
-                }
+                    if (expectedAt > now + 60_000L) {
+                        Log.d(TAG, "Ignoring early alarm for reminder " + reminderId + " kind=" + kind);
+                        Log.d(TAG, "Ignoring early alarm for reminder " + reminderId + " kind=" + kindFinal);
+                        pendingResult.finish();
+                        return;
+                    }
+
 
                 final Reminder toShow = reminder;
-                final long dbDoneElapsed = SystemClock.elapsedRealtime();
-                Log.d(TAG_TIMING, "DB_OK id=" + reminderId + " kind=" + kindFinal
-                        + " expectedWallMs=" + expectedAt
-                        + " delayFromExpectedMs=" + (receivedWallMs - expectedAt)
-                        + " queueAndDbMs=" + (dbDoneElapsed - receivedElapsedMs)
-                        + " dbWorkMs=" + (dbDoneElapsed - workStartElapsed));
-
-                try {
-                    // Post directly from background thread to avoid main-thread contention adding latency.
-                    NotificationHelper.showReminderNotification(appCtx, toShow, kindFinal);
-                    final long notifiedElapsed = SystemClock.elapsedRealtime();
-                    Log.d(TAG_TIMING, "NOTIFIED id=" + reminderId + " kind=" + kindFinal
-                            + " totalFromReceiveMs=" + (notifiedElapsed - receivedElapsedMs)
-                            + " afterDbMs=" + (notifiedElapsed - dbDoneElapsed));
-                } finally {
-                    pendingResult.finish();
-                }
+                Handler main = new Handler(Looper.getMainLooper());
+                main.post(() -> {
+                    try {
+                        NotificationHelper.showReminderNotification(appCtx, toShow, kindFinal);
+                    } finally {
+                        pendingResult.finish();
+                    }
+                });
             } catch (Throwable t) {
                 Log.e(TAG, "Reminder alarm failed", t);
                 pendingResult.finish();

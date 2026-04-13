@@ -113,7 +113,7 @@ public final class NotificationHelper {
                 .setContentIntent(tap)
                 .setDefaults(NotificationCompat.DEFAULT_LIGHTS)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-        Log.d(TAG, "notify() id=" + notificationId + " reminderId=" + reminder.getId() + " kind=" + kind);
+
         NotificationManagerCompat.from(context).notify(notificationId, b.build());
     }
 
