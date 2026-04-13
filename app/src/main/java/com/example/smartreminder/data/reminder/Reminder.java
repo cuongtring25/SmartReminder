@@ -35,15 +35,15 @@ public class Reminder {
     private Integer category_id;
 
     @NonNull
-    private String title;
+    private final String title;
 
     private String description;
 
     @NonNull
-    private Date due_date;
+    private final Date due_date;
 
     @NonNull
-    private Date remind_at;
+    private final Date remind_at;
 
     private int priority = 2;
 
@@ -69,7 +69,9 @@ public class Reminder {
 
     private int is_deleted = 0;
 
-    public Reminder(int user_id,int category_id, @NonNull String title, @NonNull Date due_date, @NonNull Date remind_at) {
+    private int alarm_enabled = 1;
+
+    public Reminder(int user_id, Integer category_id, @NonNull String title, @NonNull Date due_date, @NonNull Date remind_at) {
         this.user_id = user_id;
         this.category_id = category_id;
         this.title = title;
@@ -78,6 +80,9 @@ public class Reminder {
         this.created_at = new Date();
         this.updated_at = new Date();
     }
+
+    public int getAlarm_enabled() { return alarm_enabled; }
+    public void setAlarm_enabled(int alarm_enabled) { this.alarm_enabled = alarm_enabled; }
 
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
@@ -89,16 +94,12 @@ public class Reminder {
     public void setCategory_id(Integer category_id) { this.category_id = category_id; }
 
     @NonNull public String getTitle() { return title; }
-    public void setTitle(@NonNull String title) { this.title = title; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
     @NonNull public Date getDue_date() { return due_date; }
-    public void setDue_date(@NonNull Date due_date) { this.due_date = due_date; }
-
     @NonNull public Date getRemind_at() { return remind_at; }
-    public void setRemind_at(@NonNull Date remind_at) { this.remind_at = remind_at; }
 
     public int getPriority() { return priority; }
     public void setPriority(int priority) { this.priority = priority; }

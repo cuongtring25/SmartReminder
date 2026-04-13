@@ -10,5 +10,18 @@
     <string name="location">location</string>
     <string name="set_alarm">set alarm</string>
     <string name="add">add</string>
-    <string name="cancel">cancel</string>
+    <string name="cancel">Cancel</string>
+
+    <string name="notification_channel_reminders_title">Task Reminders</string>
+    <string name="notification_channel_reminders_desc">Timely alerts to keep you on track with your goals.</string>
+    <string name="notification_channel_badges_title">Milestones</string>
+    <string name="notification_channel_badges_desc">Notifications for your hard-earned achievements.</string>
+    <string name="notification_reminder_text">Ready to start? Tap to view details.</string>
+    <string name="notification_badge_title">Outstanding! You unlocked %1$s</string>
+    <string name="toast_past_reminder_time">Oops! That time has already passed. Please choose a future time.</string>
+    <string name="toast_exact_alarm_denied">To fire alerts at the exact second, please enable the permission in Settings.</string>
+    <string name="toast_notifications_denied">Reminders are hidden. Please enable notifications in System Settings.</string>
+    <string name="toast_schedule_name_required">Every reminder needs a name. What are you planning to do?</string>
+    <string name="notification_reminder_start">Start</string>
+    <string name="notification_reminder_end">Time over</string>
 </resources>

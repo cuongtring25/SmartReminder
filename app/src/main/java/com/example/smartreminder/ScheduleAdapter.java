@@ -17,9 +17,9 @@ import java.util.Locale;
 
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHolder> {
 
-    private List<Reminder> reminders;
-    private OnScheduleChangeListener listener;
-    private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private final List<Reminder> reminders;
+    private final OnScheduleChangeListener listener;
+    private final SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
     public interface OnScheduleChangeListener {
         void onScheduleChanged(Reminder reminder);
@@ -42,14 +42,13 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ViewHo
         Reminder reminder = reminders.get(position);
         holder.tvActivityName.setText(reminder.getTitle());
         
-        String startTime = timeFormat.format(reminder.getDue_date());
-        String endTime = timeFormat.format(reminder.getRemind_at());
+        String startTime = timeFormat.format(reminder.getRemind_at());
+        String endTime = timeFormat.format(reminder.getDue_date());
         holder.tvTime.setText(String.format("%s - %s", startTime, endTime));
         
         holder.tvLocation.setText(reminder.getLocation() != null ? reminder.getLocation() : "");
-        
-        holder.ivAlarm.setVisibility(reminder.getRemind_at() != null ? View.VISIBLE : View.GONE);
-        
+
+        holder.ivAlarm.setVisibility(reminder.getAlarm_enabled() == 1 ? View.VISIBLE : View.GONE);
         holder.cbCompleted.setOnCheckedChangeListener(null);
         holder.cbCompleted.setChecked(reminder.getStatus().equals("completed"));
         

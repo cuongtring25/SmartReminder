@@ -12,7 +12,7 @@ import java.util.List;
 @Dao
 public interface ReminderDao {
     @Insert
-    void insert(Reminder reminder);
+    long insert(Reminder reminder);
 
     @Update
     void update(Reminder reminder);
@@ -20,17 +20,21 @@ public interface ReminderDao {
     @Delete
     void delete(Reminder reminder);
 
-    @Query("DELETE FROM reminders")
-    void deleteAllReminders();
+    @Query("SELECT * FROM reminders WHERE id = :id LIMIT 1")
+    Reminder getById(int id);
 
+    @Query("SELECT * FROM reminders WHERE is_deleted = 0 AND alarm_enabled = 1 " +
+            "AND status IN ('pending', 'snoozed') AND (remind_at > :nowMillis OR due_date > :nowMillis)")    List<Reminder> getFutureAlarmReminders(long nowMillis);
+
+    @Query("SELECT COUNT(*) FROM reminders WHERE user_id = :userId AND status = 'completed' AND is_deleted = 0")
+    int countCompletedReminders(int userId);
+
+    @Query("SELECT DISTINCT strftime('%Y-%m-%d', due_date/1000, 'unixepoch', 'localtime') " +
+            "FROM reminders WHERE user_id = :userId AND status = 'completed' AND is_deleted = 0 " +
+            "ORDER BY 1 ASC")
+    List<String> getCompletedLocalDayKeys(int userId);
     @Query("SELECT * FROM reminders WHERE is_deleted = 0 ORDER BY due_date ASC")
     LiveData<List<Reminder>> getAllReminders();
-
-    @Query("SELECT * FROM reminders WHERE user_id = :userId AND is_deleted = 0 ORDER BY due_date ASC")
-    LiveData<List<Reminder>> getRemindersByUser(int userId);
-
-    @Query("SELECT * FROM reminders WHERE status = :status AND is_deleted = 0")
-    LiveData<List<Reminder>> getRemindersByStatus(String status);
 
     // Stats for Dashboard
     @Query("SELECT COUNT(*) FROM reminders WHERE user_id = :userId AND DATE(due_date/1000, 'unixepoch', 'localtime') = DATE(:today/1000, 'unixepoch', 'localtime') AND is_deleted = 0")
@@ -57,9 +61,6 @@ public interface ReminderDao {
             "AND due_date >= :start AND due_date <= :end AND is_deleted = 0 " +
             "GROUP BY date ORDER BY date ASC")
     LiveData<List<DayStat>> getWeeklyCompletedStats(int userId, long start, long end);
-
-    @Query("SELECT * FROM reminders WHERE user_id = :userId AND is_deleted = 0")
-    List<Reminder> getRemindersForUser(int userId);
 
     @Query("SELECT * FROM reminders WHERE user_id = :userId " +
             "AND DATE(due_date/1000, 'unixepoch', 'localtime') = DATE(:today/1000, 'unixepoch', 'localtime') " +
