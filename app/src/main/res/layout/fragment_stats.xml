@@ -23,19 +23,35 @@
         <!-- Mock Bar Chart -->
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="220dp"
             android:layout_marginTop="16dp"
             app:cardCornerRadius="12dp"
             app:cardElevation="4dp">
 
             <LinearLayout
-                android:id="@+id/chartContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="bottom"
-                android:orientation="horizontal"
-                android:padding="16dp">
-                <!-- Bars will be added here dynamically -->
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvChartDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingTop="12dp"
+                    android:text="Select a bar to see details"
+                    android:textColor="@color/text_secondary"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:id="@+id/chartContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="bottom"
+                    android:orientation="horizontal"
+                    android:padding="16dp">
+                    <!-- Bars will be added here dynamically -->
+                </LinearLayout>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -109,7 +125,7 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:padding="16dp">
-                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Today completed" android:textSize="12sp"/>
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Total completed" android:textSize="12sp"/>
                     <TextView
                         android:id="@+id/tvTotalCompleted"
                         android:layout_width="wrap_content"

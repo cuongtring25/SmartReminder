@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.smartreminder.data.ReminderDatabase;
@@ -24,10 +25,11 @@ import java.util.Locale;
 public class StatsFragment extends Fragment {
 
     private TextView tvStreakValue, tvTotalCompleted, tvTodayMissed, 
-            tvWeeklyTotal, tvWeeklyCompleted, tvWeeklyMissed;
+            tvWeeklyTotal, tvWeeklyCompleted, tvWeeklyMissed, tvChartDetail;
     private LinearLayout chartContainer;
     private ReminderDao reminderDao;
     private int currentUserId;
+    private View selectedBar = null;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class StatsFragment extends Fragment {
         tvWeeklyTotal = view.findViewById(R.id.tvWeeklyTotal);
         tvWeeklyCompleted = view.findViewById(R.id.tvWeeklyCompleted);
         tvWeeklyMissed = view.findViewById(R.id.tvWeeklyMissed);
+        tvChartDetail = view.findViewById(R.id.tvChartDetail);
         chartContainer = view.findViewById(R.id.chartContainer);
 
         loadStats();
@@ -111,25 +114,30 @@ public class StatsFragment extends Fragment {
 
     private void updateChart(List<DayStat> stats) {
         chartContainer.removeAllViews();
+        tvChartDetail.setText(R.string.select_bar_details);
+        selectedBar = null;
         
-        int maxCount = 1;
+        int maxCount = 0;
         if (stats != null) {
             for (DayStat stat : stats) {
                 if (stat.completedCount > maxCount) maxCount = stat.completedCount;
             }
         }
+        if (maxCount == 0) maxCount = 1;
 
         // setting up format for comparision
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        SimpleDateFormat displayFmt = new SimpleDateFormat("dd/MM", Locale.getDefault());
         Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek()); // return to first day of week
+        cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
 
         // column statistic
         float density = getResources().getDisplayMetrics().density;
-        int maxHeightPx = (int) (160 * density);
+        int maxHeightPx = (int) (140 * density);
 
         for (int i = 0; i < 7; i++) {
             String dateKey = sdf.format(cal.getTime());
+            String displayDate = displayFmt.format(cal.getTime());
             int count = 0;
 
             // find if there are reminders for this date
@@ -147,24 +155,41 @@ public class StatsFragment extends Fragment {
             
             // if there are no tasks, set height to 2dp for blurring ,otherwise at least 5 dp
             if (count == 0) {
-                heightPx = (int) (2 * density);
-            } else if (heightPx < (5 * density)) {
-                heightPx = (int) (5 * density);
+                heightPx = (int) (4 * density);
+            } else if (heightPx < (10 * density)) {
+                heightPx = (int) (10 * density);
             }
 
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(0, heightPx);
             params.weight = 1;
-            params.setMargins((int)(4 * density), 0, (int)(4 * density), 0);
+            params.setMargins((int)(6 * density), 0, (int)(6 * density), 0);
             bar.setLayoutParams(params);
             
-            if (count > 0) {
-                bar.setBackgroundColor(getResources().getColor(R.color.red));
-            } else {
-                bar.setBackgroundColor(0x1A000000); // grey for empty
-            }
+            int colorRes = (count > 0) ? R.color.red : R.color.progress_background;
+            bar.setBackgroundColor(ContextCompat.getColor(requireContext(), colorRes));
+            bar.setAlpha(0.8f);
+
+            final int finalCount = count;
+            final String finalDate = displayDate;
+            final int finalColor = ContextCompat.getColor(requireContext(), colorRes);
+
+            bar.setOnClickListener(v -> {
+                // Reset previously selected bar
+                if (selectedBar != null) {
+                    selectedBar.setAlpha(0.8f);
+                    selectedBar.setScaleX(1.0f);
+                }
+                
+                // Highlight current bar
+                v.setAlpha(1.0f);
+                v.setScaleX(1.1f);
+                selectedBar = v;
+
+                tvChartDetail.setText(getString(R.string.chart_detail_format, finalDate, finalCount));
+            });
             
             chartContainer.addView(bar);
-            cal.add(Calendar.DAY_OF_WEEK, 1); // next day
+            cal.add(Calendar.DAY_OF_WEEK, 1);
         }
     }
 }

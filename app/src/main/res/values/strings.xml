@@ -24,4 +24,7 @@
     <string name="toast_schedule_name_required">Every reminder needs a name. What are you planning to do?</string>
     <string name="notification_reminder_start">Start</string>
     <string name="notification_reminder_end">Time over</string>
+
+    <string name="select_bar_details">Select a bar to see details</string>
+    <string name="chart_detail_format">Date %1$s: %2$d completed</string>
 </resources>
